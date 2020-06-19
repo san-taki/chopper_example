@@ -7,7 +7,7 @@ class ChopperClientCreator {
   static ChopperClient create() {
     return ChopperClient(
       baseUrl: ChopperClientCreator.baseUrl,
-      converter: ModelConverter(),
+      converter: BooksConverter(),
       errorConverter: JsonConverter(),
     );
   }

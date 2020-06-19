@@ -10,8 +10,7 @@ part 'books_state.g.dart';
 
 @freezed
 abstract class BooksState with _$BooksState {
-  const factory BooksState({@Default([]) List<Book> books}) =
-      _BooksState;
+  const factory BooksState({@Default([]) List<Book> books}) = _BooksState;
 
   factory BooksState.fromJson(Map<String, dynamic> json) =>
       _$BooksStateFromJson(json);
@@ -20,14 +19,16 @@ abstract class BooksState with _$BooksState {
 class BooksStateNotifier extends StateNotifier<BooksState> {
   final BooksRepository repository;
 
+  String isbn =
+      "4049123185,4048937359,9784904209882,9784048915830,4048936360,4049124378,4048939823,4049120658";
+
   BooksStateNotifier(this.repository) : super(const BooksState()) {
     _initialize();
   }
 
   _initialize() async {
-    var initBooks = await repository.fetchBook();
-    var aa = initBooks.map((e) => e.toEntity()).toList();
-    state = state.copyWith(books: aa);
+    var initBooks = await repository.fetchBook(isbn);
+    state = state.copyWith(books: initBooks.map((e) => e.toEntity()).toList());
   }
 
   paging(List<Book> pagingBooks) {
@@ -35,11 +36,12 @@ class BooksStateNotifier extends StateNotifier<BooksState> {
   }
 
   favorite(String isbn) {
-    var newBooks = state.books.map((a) {
-      if (a.summary.isbn == isbn) {
-        return a.copyWith(summary: a.summary.copyWith(isFavorite: !a.summary.isFavorite));
+    var newBooks = state.books.map((book) {
+      if (book.summary.isbn == isbn) {
+        return book.copyWith(
+            summary: book.summary.copyWith(isFavorite: !book.summary.isFavorite));
       } else {
-        return a;
+        return book;
       }
     });
     state = state.copyWith(books: [...newBooks]);

@@ -8,7 +8,10 @@ part 'book.g.dart';
 
 @freezed
 abstract class Book with _$Book {
-  const factory Book({@required BookSummary summary}) = _Book;
+  const factory Book({
+    // summary以外も引数はあるが今回はパースしない
+    @required BookSummary summary
+  }) = _Book;
 
   factory Book.fromJson(Map<String, dynamic> json) => _$BookFromJson(json);
 }

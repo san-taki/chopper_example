@@ -3,7 +3,7 @@ import 'package:chopper/chopper.dart';
 
 import 'response/book_response.dart';
 
-class ModelConverter implements Converter {
+class BooksConverter implements Converter {
   @override
   Request convertRequest(Request request) {
     final req = applyHeader(
@@ -31,8 +31,12 @@ class ModelConverter implements Converter {
       body = utf8.decode(response.bodyBytes);
     }
     try {
-      var mapData = json.decode(body).map<BookResponse>((m) => BookResponse.fromJson(m)).toList();
-      return response.copyWith<BodyType>(body: mapData);
+      // APIの使用でRoot階層がList<BookResponse>になっていてKeyが取れないため、この処理が要る
+      var list = json
+          .decode(body)
+          .map<BookResponse>((m) => BookResponse.fromJson(m))
+          .toList();
+      return response.copyWith<BodyType>(body: list);
     } catch (e) {
       chopperLogger.warning(e);
       return response.copyWith<BodyType>(body: body);
