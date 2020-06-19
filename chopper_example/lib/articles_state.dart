@@ -25,9 +25,10 @@ class ArticleStateNotifier extends StateNotifier<ArticleState> {
     _initialize();
   }
 
-  _initialize() {
-    var initArticles = repository.fetchArticle();
-    state = state.copyWith(articles: initArticles);
+  _initialize() async {
+    var initArticles = await repository.fetchArticle();
+    print(initArticles);
+    state = state.copyWith(articles: [initArticles]);
   }
 
   paging(List<Article> pagingArticles) {

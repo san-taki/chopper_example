@@ -7,11 +7,16 @@ part 'article.g.dart';
 
 @freezed
 abstract class Article with _$Article {
-  const factory Article({
-    @required String title,
-    @required String description,
-    @required bool isFavorite,
-  }) = _Article;
+  const factory Article(
+      {@required String isbn,
+      @required String title,
+      @required String volume,
+      @required String series,
+      @required String publisher,
+      @required String pubdate,
+      @required String cover,
+      @required String author,
+      @Default(false) bool isFavorite}) = _Article;
 
   factory Article.fromJson(Map<String, dynamic> json) =>
       _$ArticleFromJson(json);

@@ -1,23 +1,22 @@
 import 'package:chopper_example/models/article.dart';
+import 'package:chopper_example/resources/article_response.dart';
+import 'package:chopper_example/resources/article_service.dart';
+import 'package:chopper_example/resources/chopper_client_creator.dart';
 
 class ArticleRepository {
   factory ArticleRepository() => ArticleRepository._();
 
   ArticleRepository._();
 
-  List<Article> fetchArticle() {
-    return [
-      Article(title: "test1", description: "des", isFavorite: false),
-      Article(title: "test2", description: "des", isFavorite: false),
-      Article(title: "test3", description: "des", isFavorite: false),
-      Article(title: "test4", description: "des", isFavorite: false),
-      Article(title: "test5", description: "des", isFavorite: false),
-      Article(title: "test6", description: "des", isFavorite: false),
-      Article(title: "test7", description: "des", isFavorite: false),
-      Article(title: "test8", description: "des", isFavorite: false),
-      Article(title: "test9", description: "des", isFavorite: false),
-      Article(title: "test10", description: "des", isFavorite: false),
-      Article(title: "test11", description: "des", isFavorite: false),
-    ];
+  final service = ArticlesService.create(ChopperClientCreator.create());
+
+  Future<Article> fetchArticle() async {
+    final response = await service.fetch(isbn: 4049123185);
+    if (response.isSuccessful) {
+      return ArticleResponse.fromJson(response.body[0] as Map<String, dynamic>)
+          .toEntity();
+    } else {
+      throw Exception();
+    }
   }
 }

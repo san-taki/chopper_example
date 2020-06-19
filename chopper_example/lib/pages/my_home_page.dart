@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -46,12 +47,21 @@ class MyHomePage extends StatelessWidget {
         child: InkWell(
           onTap: onArticlePressed,
           child: Container(
-            height: 70,
+            height: 140,
             padding: EdgeInsets.only(left: 8, top: 2, right: 8, bottom: 2),
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Row(
+                mainAxisSize: MainAxisSize.max,
                 children: <Widget>[
+                  Expanded(
+                    child: CachedNetworkImage(
+                      imageUrl: article.cover,
+                      progressIndicatorBuilder: (context, url, downloadProgress) =>
+                          CircularProgressIndicator(value: downloadProgress.progress),
+                      errorWidget: (context, url, error) => Icon(Icons.error),
+                    ),
+                  ),
                   Expanded(
                     flex: 8,
                     child: Align(
@@ -63,10 +73,10 @@ class MyHomePage extends StatelessWidget {
                           Text(
                             article.title,
                             style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold),
+                                fontSize: 14, fontWeight: FontWeight.bold),
                           ),
                           Text(
-                            article.description,
+                            article.publisher,
                             style:
                                 TextStyle(fontSize: 12, color: Colors.black54),
                           )

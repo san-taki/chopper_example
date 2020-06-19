@@ -58,6 +58,9 @@ unlinked_spec.ds
 *.freezed.dart
 *.g.dart
 
+# chopper
+*.chopper.dart
+
 # Android related
 **/android/**/gradle-wrapper.jar
 **/android/.gradle
