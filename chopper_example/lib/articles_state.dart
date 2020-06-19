@@ -12,7 +12,7 @@ part 'articles_state.g.dart';
 @freezed
 abstract class ArticleState with _$ArticleState {
   const factory ArticleState({@Default([]) List<Article> articles}) =
-      _ArticleState;
+  _ArticleState;
 
   factory ArticleState.fromJson(Map<String, dynamic> json) =>
       _$ArticleStateFromJson(json);
@@ -33,5 +33,16 @@ class ArticleStateNotifier extends StateNotifier<ArticleState> {
 
   paging(List<Article> pagingArticles) {
     state = state.copyWith(articles: [...state.articles, ...pagingArticles]);
+  }
+
+  favorite(String isbn) {
+    var newArticles = state.articles.map((a) {
+      if (a.isbn == isbn) {
+        return a.copyWith(isFavorite: !a.isFavorite);
+      } else {
+        return a;
+      }
+    });
+    state = state.copyWith(articles: [...newArticles]);
   }
 }

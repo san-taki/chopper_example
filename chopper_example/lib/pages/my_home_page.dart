@@ -45,7 +45,7 @@ class MyHomePage extends StatelessWidget {
         semanticContainer: true,
         clipBehavior: Clip.antiAliasWithSaveLayer,
         child: InkWell(
-          onTap: onArticlePressed,
+          onTap: () {},
           child: Container(
             height: 140,
             padding: EdgeInsets.only(left: 8, top: 2, right: 8, bottom: 2),
@@ -55,25 +55,28 @@ class MyHomePage extends StatelessWidget {
                 mainAxisSize: MainAxisSize.max,
                 children: <Widget>[
                   Expanded(
+                    flex: 3,
                     child: CachedNetworkImage(
                       imageUrl: article.cover,
-                      progressIndicatorBuilder: (context, url, downloadProgress) =>
-                          CircularProgressIndicator(value: downloadProgress.progress),
+                      progressIndicatorBuilder:
+                          (context, url, downloadProgress) =>
+                              CircularProgressIndicator(
+                                  value: downloadProgress.progress),
                       errorWidget: (context, url, error) => Icon(Icons.error),
                     ),
                   ),
                   Expanded(
-                    flex: 8,
+                    flex: 5,
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text(
                             article.title,
                             style: TextStyle(
-                                fontSize: 14, fontWeight: FontWeight.bold),
+                                fontSize: 12, fontWeight: FontWeight.bold),
                           ),
                           Text(
                             article.publisher,
@@ -87,11 +90,10 @@ class MyHomePage extends StatelessWidget {
                   Expanded(
                     flex: 2,
                     child: GestureDetector(
-                      onTap: onFavoritePressed,
-                      child: Icon(
-                        Icons.favorite_border,
-                        size: 22,
-                      ),
+                      onTap: () => context
+                          .read<ArticleStateNotifier>()
+                          .favorite(article.isbn),
+                      child: _buildFavoriteIcon(article),
                     ),
                   ),
                 ],
@@ -103,11 +105,18 @@ class MyHomePage extends StatelessWidget {
     );
   }
 
-  void onArticlePressed() {
-    print("onArticlePressed");
-  }
-
-  void onFavoritePressed() {
-    print("onFavoritePressed");
+  Widget _buildFavoriteIcon(Article article) {
+    if (article.isFavorite) {
+      return Icon(
+        Icons.favorite,
+        color: Colors.red,
+        size: 22,
+      );
+    } else {
+      return Icon(
+        Icons.favorite_border,
+        size: 22,
+      );
+    }
   }
 }
