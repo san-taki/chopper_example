@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_state_notifier/flutter_state_notifier.dart';
-import 'package:chopper_example/articles_state.dart';
+import 'package:chopper_example/books_state.dart';
 import 'package:chopper_example/pages/my_home_page.dart';
 import 'package:flutter/widgets.dart';
 
-import 'resources/article_repository.dart';
+import 'resources/books_repository.dart';
 
 class MyApp extends StatelessWidget {
   @override
@@ -15,8 +15,8 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.green,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: StateNotifierProvider<ArticleStateNotifier, ArticleState>(
-        create: (_) => ArticleStateNotifier(ArticleRepository()),
+      home: StateNotifierProvider<BooksStateNotifier, BooksState>(
+        create: (_) => BooksStateNotifier(BooksRepository()),
         child: MyHomePage(),
       ),
     );

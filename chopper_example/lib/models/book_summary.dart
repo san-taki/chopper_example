@@ -1,13 +1,13 @@
 import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'article.freezed.dart';
+part 'book_summary.freezed.dart';
 
-part 'article.g.dart';
+part 'book_summary.g.dart';
 
 @freezed
-abstract class Article with _$Article {
-  const factory Article(
+abstract class BookSummary with _$BookSummary {
+  const factory BookSummary(
       {@required String isbn,
       @required String title,
       @required String volume,
@@ -16,8 +16,8 @@ abstract class Article with _$Article {
       @required String pubdate,
       @required String cover,
       @required String author,
-      @Default(false) bool isFavorite}) = _Article;
+      @Default(false) bool isFavorite}) = _BookSummary;
 
-  factory Article.fromJson(Map<String, dynamic> json) =>
-      _$ArticleFromJson(json);
+  factory BookSummary.fromJson(Map<String, dynamic> json) =>
+      _$BookSummaryFromJson(json);
 }

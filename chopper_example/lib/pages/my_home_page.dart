@@ -1,9 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:chopper_example/models/book.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:chopper_example/articles_state.dart';
-import 'package:chopper_example/models/article.dart';
+import 'package:chopper_example/books_state.dart';
 
 class MyHomePage extends StatelessWidget {
   @override
@@ -18,7 +18,7 @@ class MyHomePage extends StatelessWidget {
     return CustomScrollView(slivers: <Widget>[
       _buildAppbar(),
       ...context
-          .select<ArticleState, dynamic>((state) => state.articles)
+          .select<BooksState, dynamic>((state) => state.books)
           .map((article) => _buildArticle(context, article))
           .toList(),
     ]);
@@ -35,7 +35,7 @@ class MyHomePage extends StatelessWidget {
     );
   }
 
-  Widget _buildArticle(BuildContext context, Article article) {
+  Widget _buildArticle(BuildContext context, Book book) {
     return SliverToBoxAdapter(
       child: Card(
         elevation: 0,
@@ -57,7 +57,7 @@ class MyHomePage extends StatelessWidget {
                   Expanded(
                     flex: 3,
                     child: CachedNetworkImage(
-                      imageUrl: article.cover,
+                      imageUrl: book.summary.cover,
                       progressIndicatorBuilder:
                           (context, url, downloadProgress) =>
                               CircularProgressIndicator(
@@ -74,12 +74,12 @@ class MyHomePage extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text(
-                            article.title,
+                            book.summary.title,
                             style: TextStyle(
                                 fontSize: 12, fontWeight: FontWeight.bold),
                           ),
                           Text(
-                            article.publisher,
+                            book.summary.publisher,
                             style:
                                 TextStyle(fontSize: 12, color: Colors.black54),
                           )
@@ -91,9 +91,9 @@ class MyHomePage extends StatelessWidget {
                     flex: 2,
                     child: GestureDetector(
                       onTap: () => context
-                          .read<ArticleStateNotifier>()
-                          .favorite(article.isbn),
-                      child: _buildFavoriteIcon(article),
+                          .read<BooksStateNotifier>()
+                          .favorite(book.summary.isbn),
+                      child: _buildFavoriteIcon(book),
                     ),
                   ),
                 ],
@@ -105,8 +105,8 @@ class MyHomePage extends StatelessWidget {
     );
   }
 
-  Widget _buildFavoriteIcon(Article article) {
-    if (article.isFavorite) {
+  Widget _buildFavoriteIcon(Book book) {
+    if (book.summary.isFavorite) {
       return Icon(
         Icons.favorite,
         color: Colors.red,
